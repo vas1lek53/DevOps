@@ -1,0 +1,33 @@
+- name: Messages
+  hosts: Client-1
+  become: yes
+
+  vars:
+      slovo1: I
+      slovo2: ebu
+      slovo3: gusei
+
+  tasks:
+
+      - name:
+        debug:
+          var: slovo1
+
+      - debug:
+          msg: "{{slovo1}} {{slovo2}} {{slovo3}}"
+
+      - set_fact:
+          message: "{{slovo1}} {{slovo2}} {{slovo3}}"
+
+      - debug:
+          var: message
+
+      - debug:
+          msg: "{{ansible_distribution}} Version: {{ansible_distribution_version}}"
+
+      - shell: id client01
+        register: client_groups
+
+      - name: Print Groupse
+        debug:
+          msg: "Client1 in Groups: {{client_groups}}"

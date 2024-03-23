@@ -1,0 +1,29 @@
+- name: Ping Servers
+  hosts: all
+  become: yes
+
+  vars:
+      pakages:
+          - apache2
+          - htop
+          - tree
+          - rsync
+
+      file_src: file123
+      file_dest: /srv
+
+  tasks:
+
+      - name: Task ping
+        ping:
+
+      - name: Install apache2
+        apt:
+            pkg: "{{pakages}}"
+            state: present
+
+      - name: Copy File
+        copy:
+            src: "{{file_src}}"
+            dest: "{{file_dest}}"
+            mode: 0777

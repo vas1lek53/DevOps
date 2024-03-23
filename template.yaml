@@ -1,0 +1,15 @@
+- name: Template
+  hosts: all
+  become: yes
+
+  vars:
+
+    position: boss
+
+  tasks:
+
+  - name: Copy File
+    template:
+        src: ./file111.j2
+        dest: /home
+        mode: 0777
