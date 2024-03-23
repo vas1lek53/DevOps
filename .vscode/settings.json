@@ -1,0 +1,6 @@
+{
+    "ansible.python.interpreterPath": "c:\\Users\\daniv\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/aws/serverless-application-model/main/samtranslator/schema/schema.json": "file:///c%3A/Users/daniv/OneDrive/DevOps/git-dir/template.yaml"
+    }
+}

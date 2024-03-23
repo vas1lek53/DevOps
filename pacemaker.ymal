@@ -1,0 +1,50 @@
+- name: Create cluster Pacemaker
+  hosts: group
+  become: yes
+
+  vars:
+    pakages:
+      - pacemaker 
+      - corosync 
+      - pcs 
+      - resource-agents 
+      - qemu-kvm 
+      - qemu-system 
+      - qemu-utils 
+      - qemu-kvm 
+      - virt-manager 
+      - libvirt-daemon-system 
+      - virtinst 
+      - libvirt-clients 
+      - bridge-utils
+      - nfs-common
+
+  tasks:
+
+    - name: Update 
+      apt:
+        update_cache: yes
+
+    - name: Install pakages
+      apt:
+        pkg: "{{pakages}}"
+        state: present
+
+
+    - name: Start and enable pcsd service
+      service:
+        name: pcsd
+        state: started
+        enabled: yes
+
+    - name: Copy File
+      template:
+        src: ./addhosts.j2
+        dest:
+        
+
+    - name: Add content to /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        line: "{{items}}"
+      loop: "{{lookup('file','addhosts').split('\n')}}"
