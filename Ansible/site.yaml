@@ -1,0 +1,8 @@
+- name: First Install + Web-Project
+  hosts: all 
+  gather_facts: yes #запросить настройки клиента (его переменные)
+  roles: #здесть описываем роли, которые хотим запускать
+    - first_setup
+    - web-project
+
+    
