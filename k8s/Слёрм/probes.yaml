@@ -1,0 +1,50 @@
+apiVersion: apps/v1    # cat deployment-with-stuff.yaml | grep api                                 
+kind: Deployment                                               
+metadata:                                              
+	name: my-deployment                             
+spec:
+	replicas: 2                                 
+	selector:
+		matchLabels:
+			app: my-app
+  strategy:   # настройки deployment
+    rollingUpdate:
+      maxSurge: 1   # (10%) на какое кол-во реплик мы можешь увеличить наше приложение
+      maxUnavailable: 1 # (10%) на какое кол-во реплик мы можешь уменьшить наше приложение
+    type: RollingUpdate   # описываем способ обновления приложения (ролинг, рекрэйт)
+	template:   
+		metadata:
+			labels:
+			  app: my-app
+		spec:
+      	containers:                  
+		      - image: nginx:1.12               
+		        name: nginx                          
+		        ports:
+			        - containerPort: 80
+            readinessProbe: # первая проба (готово ли приложение вообще к приему трафика)
+              failureThreshold: 3   # сколько раз может провалится тест (3 раза)
+              httpGet:   # делаем curl в корневую деррикторию (можно еще использовать exec)
+                path: /  #  выполнять какую либо команду в контейнере и еще можно проверить дос-
+                port: 80 #  тупность tcp порта
+              periodSeconds: 10   # как часто должна проводится проверка (каждые 10 сек)
+              successThreshold: 1  # одна успешная проба для обнуления счетчика failureThreshold
+              timeoutSeconds: 1  # Таймаунт на выполнение пробы 1 сек
+            livenessProbe: # вторая проба (постоянно проверяет приложение, живо оно или нет)
+              failureThreshold: 3
+              httpGet: 
+                path: /
+                port: 80
+              periodSeconds: 10
+              successThreshold: 1
+              timeoutSeconds: 1
+              initialDelaySeconds: 1
+              initialDelaySeconds: 10  # через сколько секунд делать первую пробу
+            resources:
+              requsts:
+                cpu: 50m  # 1 cpu = 1000m (милиCPU), 50m = 1/20 cpu
+                memory: 100Mi
+              limits:
+                cpu: 100m
+                memory: 100Mi       
+

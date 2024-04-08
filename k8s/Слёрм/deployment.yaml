@@ -1,0 +1,25 @@
+apiVersion: apps/v1    # cat deployment-with-stuff.yaml | grep api                                 
+kind: Deployment                                               
+metadata:                                              
+	name: my-deployment                             
+spec:
+	replicas: 2                                 
+	selector:
+		matchLabels:
+			app: my-app
+  strategy:   # настройки deployment
+    rollingUpdate:
+      maxSurge: 1   # (10%) на какое кол-во реплик мы можешь увеличить наше приложение
+      maxUnavailable: 1 # (10%) на какое кол-во реплик мы можешь уменьшить наше приложение
+    type: RollingUpdate   # описываем способ обновления приложения (ролинг, рекрэйт)
+	template:   
+		metadata:
+			labels:
+			  app: my-app
+		spec:
+      	containers:                  
+		      - image: nginx:1.12               
+		        name: nginx                          
+		        ports:
+			        - containerPort: 80       
+
