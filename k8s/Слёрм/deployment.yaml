@@ -7,7 +7,7 @@ spec:
 	selector:
 		matchLabels:
 			app: my-app
-  strategy:   # настройки deployment
+  strategy:   # настройки deployment (регламентирует порядок обновления приложения)
     rollingUpdate:
       maxSurge: 1   # (10%) на какое кол-во реплик мы можешь увеличить наше приложение
       maxUnavailable: 1 # (10%) на какое кол-во реплик мы можешь уменьшить наше приложение

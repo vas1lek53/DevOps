@@ -40,6 +40,12 @@ spec:
               timeoutSeconds: 1
               initialDelaySeconds: 1
               initialDelaySeconds: 10  # через сколько секунд делать первую пробу
+            startupProbe: # запустилось ли приложение, пока она не сработает, остальные пробы не запустятся
+              failureThreshold: 10
+              httpGet:
+                path: /
+                port: 80
+              periodSeconds: 10
             resources:
               requsts:
                 cpu: 50m  # 1 cpu = 1000m (милиCPU), 50m = 1/20 cpu
